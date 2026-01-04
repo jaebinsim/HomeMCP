@@ -1,0 +1,11 @@
+[tuya]
+access_id = "YOUR_TUYA_ACCESS_ID"
+access_key = "YOUR_TUYA_ACCESS_KEY"
+username = "YOUR_TUYA_EMAIL"
+password = "YOUR_TUYA_PASSWORD"
+endpoint = "https://openapi.tuya.com"
+country_code = "82"
+schema = "tuyaSmart"
+
+[windows_agent]
+base_url = "YOUR_WINDOWS_AGENT_URL"
