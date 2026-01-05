@@ -50,18 +50,6 @@ HomeMCP는 단순한 브릿지가 아닙니다. 집안의 모든 기기/상태/�
   curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off%3Fdelay%3D5"
   ```
 
-## ⚡ 2분 Quick Start
-
-아래 3단계만으로 “일단 한 번” 동작을 확인할 수 있습니다.
-
-1) `home-mcp-core/config/settings.toml`에 Tuya Cloud 계정/리전(endpoint) 입력  
-2) `home-mcp-core/config/devices.toml`에 최소 1개 디바이스 등록(별칭 포함)  
-3) 서버 실행 후 `curl`로 on/status 호출
-
-👉 자세한 가이드는 아래의 **[Quick Start](#quick-start-초기-사용-방법)** 섹션을 참고하세요.
-
----
-
 ## Key Features
 
 - 📱 **iOS Shortcuts 중심 UX**: “앱 설치/대시보드”보다 **단축어 실행**을 배포·사용 단위로 설계
@@ -343,38 +331,41 @@ HomeMCP는 단순한 서버 + 단축어 조합이 아니라,
 
 > 아래 가이드는 **개발/테스트용 최소 셋업** 기준입니다. (배포/운영은 `Planned Extensions`의 Web GUI, 인증, 네트워크 보안 항목과 함께 별도 정리 예정)
 
-### 2분 체험 (최소 동작 확인)
-
-이미 Tuya Cloud 계정/디바이스가 준비되어 있다면, 아래 순서로 “일단 한 번” 동작을 확인할 수 있습니다.
-
-1) `settings.toml`에 Tuya Cloud 계정/리전(endpoint) 입력
-2) `devices.toml`에 최소 1개 디바이스 등록(별칭 포함)
-3) 서버 실행 후 `curl`로 on/status 호출
-
-> Siri/Shortcuts 연동은 그 다음 단계입니다.
-
 ### 0) 권장 환경
 
-- **Python 3.11+ 권장** (표준 라이브러리 `tomllib` 사용)
-  - 로컬 개발은 **3.12**를 권장합니다.
+- **Python 3.11+ 권장** (현재 개발/테스트 기준)
+  - macOS에서는 `pyenv` 사용을 권장합니다.
 - macOS / Linux 권장
 
 ### 1) 레포 클론
 
 ```bash
 git clone https://github.com/jaebinsim/HomeMCP
-cd home-mcp
+cd HomeMCP
 ```
 
-### 2) Python 가상환경 만들기
+### 2) Python 설치/고정 (macOS + pyenv, 선택)
+
+```bash
+brew update
+brew install pyenv
+
+pyenv install 3.12.2
+pyenv local 3.12.2
+```
+
+> 이미 Python 3.11+가 준비되어 있다면 이 단계는 생략해도 됩니다.
+
+### 3) 가상환경 만들기
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip
+
+python -m pip install --upgrade pip
 ```
 
-### 3) 의존성 설치
+### 4) `home-mcp-core` 설치
 
 HomeMCP는 Monorepo 구조이지만,  
 **현재 Python 의존성은 `home-mcp-core/pyproject.toml`에서 단일 관리**됩니다.
@@ -382,45 +373,41 @@ HomeMCP는 Monorepo 구조이지만,
 초기 실행을 위해서는 `home-mcp-core`만 설치하면 됩니다.
 
 ```bash
-cd home-mcp-core
-pip install -e .
+python -m pip install -e ./home-mcp-core
 ```
 
-### 4) Tuya 연동 설정 (TOML)
+### 5) 설정은 Wizard로 끝 (TOML 직접 편집 불필요)
 
-디바이스 정의/계정 정보를 **TOML 설정 파일**로 관리합니다.
-
-1) 예시 템플릿을 복사해서 내 설정 파일을 만듭니다.
+이제부터는 설정 파일을 직접 복사/편집할 필요가 없습니다.
+`homemcp init`이 **Wizard 방식으로** 필요한 설정(계정/리전/디바이스 등)을 안내하고,
+완료 후 설정 파일을 자동으로 생성합니다.
 
 ```bash
-cp home-mcp-core/config/settings.example.toml home-mcp-core/config/settings.toml
-cp home-mcp-core/config/devices.example.toml home-mcp-core/config/devices.toml
+homemcp --help
+homemcp init
 ```
 
-### 5) 서버 실행 (home-mcp-core)
+- 생성되는 설정 파일 위치:
+  - `home-mcp-core/config/settings.toml`
+  - `home-mcp-core/config/devices.toml`
+
+### 6) 서버 실행 (home-mcp-core)
 
 ```bash
-cd home-mcp-core
-python -m uvicorn home_mcp_core.app:app --host 0.0.0.0 --port 8000 --reload
+uvicorn home_mcp_core.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-- `http://127.0.0.1:8000/panel/`
-  - 기본 관리 페이지(Web Panel)입니다. 디바이스/설정 확인 및 테스트에 사용합니다.
+- Web Panel
+  - 로컬: `http://127.0.0.1:8000/panel/`
+  - 같은 Wi‑Fi/LAN: `http://<your-local-ip>:8000/panel/`
 
-#### 관리 페이지 미리보기 (Web Panel)
+### 7) 디바이스 확인/관리 CLI
 
-아래는 HomeMCP Core 서버에 포함된 기본 웹 관리 페이지 예시입니다.  
-디바이스 등록 상태, 설정 파일 미리보기, 그리고 간단한 디버깅을 위해 사용됩니다.
+```bash
+homemcp devices --help
+```
 
-**Overview (Dashboard)**
-
-![HomeMCP Web Panel – Overview](docs/images/panel-overview-dark.png)
-
-**Devices Management**
-
-![HomeMCP Web Panel – Devices](docs/images/panel-devices-dark.png)
-
-### 6) 기본 제어 테스트
+### 8) 기본 제어 테스트 (선택)
 
 ```bash
 # 단일 동작: 조명 ON
@@ -436,7 +423,7 @@ curl -X GET "http://localhost:8000/tuya/living_light/status"
 curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off?delay=5"
 ```
 
-### 7) Siri Shortcuts 연결 (home-mcp-siri-shortcuts-signal)
+### 9) Siri Shortcuts 연결 (home-mcp-siri-shortcuts-signal)
 
 1) `home-mcp-siri-shortcuts-signal/install/setup-checklist.ko.md`를 따라 단축어를 설치
 2) 단축어 내부의 HomeMCP 서버 주소를 내 서버 주소로 변경
@@ -447,7 +434,7 @@ curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk
 > ⚠️ 현재 LLM 프롬프트/플로우 자동 생성 기능은 구조 설계 단계이며,
 > 초기 버전에서는 개념 설명 위주로 제공됩니다. (CLI/GUI 기반 자동화는 추후 제공 예정)
 
-### 8) LLM 프롬프트/플로우 설정 (home-mcp-llm-flows)
+### 10) LLM 프롬프트/플로우 설정 (home-mcp-llm-flows)
 
 `home-mcp-llm-flows`는
 - LLM #1: 자연어 → 실행 URL 생성

@@ -2,15 +2,15 @@
 
 # HomeMCP
 
-> **A smart-home orchestrator that works from iOS Shortcuts — without running your own AI**
+> **A smart-home orchestrator powered by iOS Shortcuts — a zero‑infrastructure AI experience**
 >
-> *“No local LLM, no GPU setup — start natural-language voice control with just an iPhone.”*
+> *“No local LLM, no GPU setup — start natural-language voice control with just an iPhone + Shortcuts.”*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![iOS Shortcuts](https://img.shields.io/badge/iOS-Shortcuts-FF4A00.svg?logo=shortcuts&logoColor=white)](https://support.apple.com/guide/shortcuts/welcome/ios)
 
-HomeMCP is a **voice-first smart home orchestration system** that you can run directly from **iOS Shortcuts**.
+HomeMCP is a **voice-first smart home orchestration system** integrated with **iOS Shortcuts**.
 You don’t need to host your own AI (local LLM / paid model server). Instead, HomeMCP leverages **Apple Intelligence features available inside Shortcuts (private cloud)** and **ChatGPT (optional, if you have an account)** to:
 
 - turn natural language into a **safe, executable control request** (LLM #1)
@@ -28,6 +28,9 @@ It also standardizes execution using a **Control URL spec** (`/tuya/{device}/{ac
 ## ✨ Why HomeMCP?
 
 - **🚫 Zero AI ops**: no GPU, no local LLM hosting — reuse the AI already available in Shortcuts (and ChatGPT optionally).
+- **🧠 Runs on ultra-low-spec hardware**: HomeMCP Core does not assume a powerful machine.
+  - no dedicated LLM server, no GPU, no high-memory environment required
+  - proven to run in real-world daily use on a **Raspberry Pi Zero 2W**
 - **🗣️ Real intent-based control**: not just fixed commands like “turn on the light,” but “set things up for movie night.”
 - **🔗 URL-First**: one standardized URL format for voice, scripts, automation, and dashboards.
 - **🛠️ Built to extend**: start with Tuya, grow toward Windows Agent, Matter, Zigbee, and more.
@@ -78,11 +81,11 @@ executed through iOS Shortcuts → HomeMCP → real devices.
 
 Verify the core loop in three steps:
 
-1) Fill `home-mcp-core/config/settings.toml` with your Tuya Cloud account + region (endpoint)
-2) Register at least one device alias in `home-mcp-core/config/devices.toml`
-3) Run the server and test with `curl` (on/status)
+1) Run `homemcp init` to generate your Tuya + device configuration
+2) Run the server
+3) Test with `curl` (on/status) or the Web Panel
 
-👉 See the full guide in **[Quick Start](#quick-start-development--local)**.
+👉 See the full guide in **[Quick Start](#quick-start-development--local)** below.
 
 ---
 
@@ -92,6 +95,9 @@ Verify the core loop in three steps:
 - 🤖 **No AI Hosting Required**
   - no local LLM, no dedicated model server, no GPU/VRAM
   - supports **Apple Intelligence inside Shortcuts (private cloud)** + **ChatGPT (optional)**
+- 🧠 **Lightweight Core Server**
+  - HomeMCP Core focuses on orchestration (HTTP control + device gateway)
+  - designed to run 24/7 on low-power home servers (e.g., Raspberry Pi / mini PC)
 - 🧠 **Two-stage LLM pipeline (as a product feature)**
   - **LLM #1**: natural language → **Control URL** (safe execution format)
   - **LLM #2**: result JSON → **one-line feedback** (includes failure reasons/status)
@@ -297,6 +303,7 @@ This URL scheme is a core design of HomeMCP to standardize execution across voic
 ## Planned Extensions
 
 - Schedule / weather / location / sensor-driven automation
+- A home-server operation guide for low-power always-on setups (Raspberry Pi, mini PC, etc.)
 - **Multi IoT platform support**
   - Integrate other IoT platforms that provide Cloud APIs (beyond Tuya)
   - Vendor-agnostic common Action layer
@@ -315,7 +322,7 @@ This URL scheme is a core design of HomeMCP to standardize execution across voic
 
 ### 0) Recommended Environment
 
-- **Python 3.11+** (uses `tomllib`)
+- **Python 3.11+**
   - **3.12** is recommended for local development
 - macOS / Linux recommended
 
@@ -326,55 +333,67 @@ git clone https://github.com/jaebinsim/HomeMCP
 cd HomeMCP
 ```
 
-### 2) Create a virtual environment
+### 2) (Optional) Install / pin Python with pyenv (macOS)
+
+```bash
+brew update
+brew install pyenv
+
+pyenv install 3.12.2
+pyenv local 3.12.2
+```
+
+> If you already have Python 3.11+ available, you can skip this.
+
+### 3) Create a virtual environment
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip
+
+python -m pip install --upgrade pip
 ```
 
-### 3) Install dependencies
+### 4) Install `home-mcp-core`
 
 HomeMCP is a monorepo, but **Python dependencies are currently managed in `home-mcp-core/pyproject.toml`**.  
 For the initial run, installing `home-mcp-core` is enough.
 
 ```bash
-cd home-mcp-core
-pip install -e .
+python -m pip install -e ./home-mcp-core
 ```
 
-### 4) Configure Tuya + devices (TOML)
+### 5) Configure via Wizard (no manual TOML editing)
+
+You no longer need to copy/edit TOML files by hand.
+`homemcp init` guides you through required settings (account/region/devices) and generates config files automatically.
 
 ```bash
-cp home-mcp-core/config/settings.example.toml home-mcp-core/config/settings.toml
-cp home-mcp-core/config/devices.example.toml home-mcp-core/config/devices.toml
+homemcp --help
+homemcp init
 ```
 
-### 5) Run the server
+- Generated config files:
+  - `home-mcp-core/config/settings.toml`
+  - `home-mcp-core/config/devices.toml`
+
+### 6) Run the server
 
 ```bash
-cd home-mcp-core
-python -m uvicorn home_mcp_core.app:app --host 0.0.0.0 --port 8000 --reload
+uvicorn home_mcp_core.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- `http://127.0.0.1:8000/panel/`  
-  - Default Web Panel for checking devices/settings and running quick tests.
+- Web Panel
+  - Local: `http://127.0.0.1:8000/panel/`
+  - Same Wi‑Fi/LAN: `http://<your-local-ip>:8000/panel/`
 
-#### Web Panel Preview
+### 7) Device management CLI
 
-Below is a preview of the default web management panel included in the HomeMCP Core server.  
-It is used to inspect device registration status, preview configuration files, and perform basic debugging.
+```bash
+homemcp devices --help
+```
 
-**Overview (Dashboard)**
-
-![HomeMCP Web Panel – Overview](docs/images/panel-overview-dark.png)
-
-**Devices Management**
-
-![HomeMCP Web Panel – Devices](docs/images/panel-devices-dark.png)
-
-### 6) Basic control tests
+### 8) Basic control tests (optional)
 
 ```bash
 # Single action: Light ON
@@ -390,11 +409,14 @@ curl -X GET "http://localhost:8000/tuya/living_light/status"
 curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off?delay=5"
 ```
 
-### 7) Connect Siri Shortcuts
+### 9) Connect Siri Shortcuts
 
 Follow the setup guide:
 
 - `home-mcp-siri-shortcuts-signal/install/setup-checklist.md` (EN) / `home-mcp-siri-shortcuts-signal/install/setup-checklist.ko.md` (KO)
+
+> ⚠️ Prompt/flow auto-generation is still in the design stage.
+> For now, documentation focuses on the concept and how Shortcuts uses the prompts.
 
 ---
 
