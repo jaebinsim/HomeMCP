@@ -54,13 +54,15 @@ executed through iOS Shortcuts → HomeMCP → real devices.
 
 **GIF (quick preview)** ![Make the house feel cozy – GIF](docs/images/demo-make-the-house-feel-cozy-record.gif)
 
-**Video (full clip)** <video src="docs/videos/demo-make-the-house-feel-cozy.mp4" controls width="100%"></video>
+**Video (full clip)**  
+[Open demo-make-the-house-feel-cozy.mp4](docs/videos/demo-make-the-house-feel-cozy.mp4)
 
 ---
 
 ### 🎥 Demo 2 — “I'm going to sleep”
 
-**Video (full clip)** <video src="docs/videos/demo-im-going-to-sleep.mp4" controls width="100%"></video>
+**Video (full clip)**  
+[Open demo-im-going-to-sleep.mp4](docs/videos/demo-im-going-to-sleep.mp4)
 
 ---
 
