@@ -44,10 +44,23 @@ Long-term, it plans to offer an (optional) **standard MCP (Model Context Protoco
 
 ## Demo
 
-> 🎬 **Demo (recommended: 10–20s GIF/video)**
-> “Hey Siri” → “movie night setup” → device control + voice feedback
->
-> (placeholder) Add `docs/images/demo.gif` here or paste a short video link.
+Below are short real-world demos showing **natural language voice commands**
+executed through iOS Shortcuts → HomeMCP → real devices.
+
+### 🎥 Demo 1 — “Make the house feel cozy”
+
+**GIF (quick preview)**  
+![Make the house feel cozy – GIF](docs/images/demo-make-the-house-feel-cozy-record.gif)
+
+**Video (full clip)**  
+👉 `docs/videos/demo-make-the-house-feel-cozy.mp4`
+
+---
+
+### 🎥 Demo 2 — “I'm going to sleep”
+
+**Video (full clip)**  
+👉 `docs/videos/demo-im-going-to-sleep.mp4`
 
 - Example calls
   ```bash
