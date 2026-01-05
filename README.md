@@ -2,27 +2,92 @@
 
 # HomeMCP
 
-HomeMCP is an **MCP (Multi Control Plane)-based smart home orchestration system** designed to control real IoT devices via **voice-first AI assistants** (e.g., Siri, Google Assistant).
+> **A smart-home orchestrator that works from iOS Shortcuts — without running your own AI**
+>
+> *“No local LLM, no GPU setup — start natural-language voice control with just an iPhone.”*
 
-The primary goal of this project is to **design and validate a universal voice-interface IoT control infrastructure that is not locked into a single voice ecosystem**.  
-As a first milestone, the current implementation provides an integration of **Siri + Tuya-based IoT devices**.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![iOS Shortcuts](https://img.shields.io/badge/iOS-Shortcuts-FF4A00.svg?logo=shortcuts&logoColor=white)](https://support.apple.com/guide/shortcuts/welcome/ios)
+
+HomeMCP is a **voice-first smart home orchestration system** that you can run directly from **iOS Shortcuts**.
+You don’t need to host your own AI (local LLM / paid model server). Instead, HomeMCP leverages **Apple Intelligence features available inside Shortcuts (private cloud)** and **ChatGPT (optional, if you have an account)** to:
+
+- turn natural language into a **safe, executable control request** (LLM #1)
+- return a **short, friendly one-line voice feedback** from the actual device result (LLM #2)
+
+It also standardizes execution using a **Control URL spec** (`/tuya/{device}/{action}`), so the same actions can be triggered from voice, scripts, automation, or dashboards.
+
+**TL;DR**
+- 📱 **Shortcuts-first UX**: start with “Hey Siri” + a Shortcut — no extra app required
+- 🤖 **No AI hosting required**: use Shortcuts’ Apple Intelligence (private cloud) / ChatGPT (optional)
+- 🎙️ Speak → **LLM #1** generates a Control URL → HomeMCP executes on real devices
+- 🔁 Result JSON → **LLM #2** produces a one-line response → Siri reads it via TTS
+- 🧩 Tuya-first, designed to extend to external controllers (e.g., Windows Agent)
+
+## ✨ Why HomeMCP?
+
+- **🚫 Zero AI ops**: no GPU, no local LLM hosting — reuse the AI already available in Shortcuts (and ChatGPT optionally).
+- **🗣️ Real intent-based control**: not just fixed commands like “turn on the light,” but “set things up for movie night.”
+- **🔗 URL-First**: one standardized URL format for voice, scripts, automation, and dashboards.
+- **🛠️ Built to extend**: start with Tuya, grow toward Windows Agent, Matter, Zigbee, and more.
+
+## 🚀 The Vision: Home Master Control Plane
+
+HomeMCP is not just a bridge. It aims to become a **central Control Plane** that unifies home devices/states/scenes into
+**LLM-readable context**, and evolves into a **Home-to-LLM Protocol**.
+
+Today, HomeMCP delivers a lightweight, practical “MCP” via iOS Shortcuts.
+Long-term, it plans to offer an (optional) **standard MCP (Model Context Protocol) interface** for integration with external Tool Hosts/clients.
+
+---
+
+## Demo
+
+> 🎬 **Demo (recommended: 10–20s GIF/video)**
+> “Hey Siri” → “movie night setup” → device control + voice feedback
+>
+> (placeholder) Add `docs/images/demo.gif` here or paste a short video link.
+
+- Example calls
+  ```bash
+  # Light ON
+  curl -X POST "http://localhost:8000/tuya/living_light/on"
+
+  # Status query
+  curl -X GET "http://localhost:8000/tuya/living_light/status"
+
+  # Sequence (URL-encoded step delay)
+  curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off%3Fdelay%3D5"
+  ```
+
+## ⚡ 2-minute Quick Start
+
+Verify the core loop in three steps:
+
+1) Fill `home-mcp-core/config/settings.toml` with your Tuya Cloud account + region (endpoint)
+2) Register at least one device alias in `home-mcp-core/config/devices.toml`
+3) Run the server and test with `curl` (on/status)
+
+👉 See the full guide in **[Quick Start](#quick-start-development--local)**.
 
 ---
 
 ## Key Features
 
-- Voice-assistant-driven IoT control architecture
-- Two-stage LLM processing pipeline
-  - **LLM #1**: Natural language command → executable Control URL path
-  - **LLM #2**: Control result JSON → natural language voice response
-- Personal MCP (HomeMCP) server architecture (self-hosted)
-- Real Tuya Cloud device control integration
-- iOS Shortcuts-based automation pipeline
-- Final user feedback via TTS
-- Preset Scenes, status queries, and automation-ready structure
-- Unified GUI for device / scene / API account management (planned)
-- Unified **GET / POST** device control API (shared by LLM / browser / scripts)
-- Action mapping layer designed for **Tuya + external controllers** (e.g., Windows Agent)
+- 📱 **iOS Shortcuts-first UX**: Shortcuts are the distribution + usage unit (not an extra app/dashboard)
+- 🤖 **No AI Hosting Required**
+  - no local LLM, no dedicated model server, no GPU/VRAM
+  - supports **Apple Intelligence inside Shortcuts (private cloud)** + **ChatGPT (optional)**
+- 🧠 **Two-stage LLM pipeline (as a product feature)**
+  - **LLM #1**: natural language → **Control URL** (safe execution format)
+  - **LLM #2**: result JSON → **one-line feedback** (includes failure reasons/status)
+- 🔗 **Unified Control URL spec** (GET/POST): one format shared by voice/buttons/scripts/schedulers
+- ☁️ **Real Tuya Cloud device control** (on/off, brightness, status, scenes, sequences)
+- 🧩 **Extensible action mapping**: designed to expand beyond Tuya (e.g., Windows Agent)
+- 🖥️ Built-in **Web Panel** for configuration checks and quick tests
+- 🧰 **Monorepo**: core server / Shortcuts distribution / (WIP) prompt & schema orchestration
+- 🗺️ Unified GUI for device/scene/account management (planned)
 
 ---
 
@@ -64,11 +129,11 @@ HomeMCP/
 
 ## What is HomeMCP?
 
-HomeMCP is the **central orchestration layer** that connects the major components:
+HomeMCP is **Shortcuts-first today** (so you can start without running your own AI),
+but long-term it aims to become an **integrated Home Control Plane** that automatically connects
+accounts/devices/scenes/prompts and voice shortcut distribution from a single configuration.
 
-- `home-mcp-core`
-- `home-mcp-siri-shortcuts-signal`
-- `home-mcp-llm-flows`
+Below is the “ultimate integration scenario” HomeMCP is aiming for.
 
 ### Ultimate Vision
 
@@ -151,6 +216,9 @@ sequenceDiagram
 
 ---
 
+<details>
+<summary><b>Control URL Specification (API)</b> — expanded spec (click to open)</summary>
+
 ## Control URL Specification (HomeMCP v1)
 
 HomeMCP uses a **URL-based control scheme** that unifies voice commands, LLM output, and automation routines.  
@@ -210,6 +278,8 @@ Examples:
 This URL scheme is a core design of HomeMCP to standardize execution across voice, LLM, and automation.
 
 ---
+ </details>
+
 
 ## Planned Extensions
 
@@ -311,7 +381,7 @@ curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk
 
 Follow the setup guide:
 
-- `home-mcp-siri-shortcuts-signal/install/setup-checklist.md`
+- `home-mcp-siri-shortcuts-signal/install/setup-checklist.md` (EN) / `home-mcp-siri-shortcuts-signal/install/setup-checklist.ko.md` (KO)
 
 ---
 

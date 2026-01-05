@@ -1,4 +1,3 @@
-
 # HomeMCP
 
 > **AI를 운영하지 않아도 되는, iOS 단축어 기반 스마트홈 오케스트레이터**
@@ -38,7 +37,10 @@ HomeMCP는 단순한 브릿지가 아닙니다. 집안의 모든 기기/상태/�
 
 ## Demo
 
-> (추가 예정) 20초 GIF/영상: “시리야, 시그널” → “영화 보기 좋게 세팅해줘” → 조명/기기 제어 + 음성 피드백
+> 🎬 **Demo (권장: 10~20초 GIF/영상)**
+> “시리야, 시그널” → “영화 보기 좋게 세팅해줘” → 조명/기기 제어 + 음성 피드백
+> 
+> (추가 예정) `docs/images/demo.gif`
 
 - 예시 호출
   ```bash
@@ -51,6 +53,16 @@ HomeMCP는 단순한 브릿지가 아닙니다. 집안의 모든 기기/상태/�
   # 시퀀스
   curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off%3Fdelay%3D5"
   ```
+
+## ⚡ 2분 Quick Start
+
+아래 3단계만으로 “일단 한 번” 동작을 확인할 수 있습니다.
+
+1) `home-mcp-core/config/settings.toml`에 Tuya Cloud 계정/리전(endpoint) 입력  
+2) `home-mcp-core/config/devices.toml`에 최소 1개 디바이스 등록(별칭 포함)  
+3) 서버 실행 후 `curl`로 on/status 호출
+
+👉 자세한 가이드는 아래의 **[Quick Start](#quick-start-초기-사용-방법)** 섹션을 참고하세요.
 
 ---
 
@@ -119,10 +131,11 @@ HomeMCP/
 
 ## What is HomeMCP?
 
-HomeMCP는 본 프로젝트 전체를 관통하는 **중앙 오케스트레이션 레이어**로,  
-`home-mcp-core`, `home-mcp-siri-shortcuts-signal`, `home-mcp-llm-flows` 세 개의 주요 프로젝트를 유기적으로 연결합니다.
+HomeMCP는 현재 **iOS Shortcuts-first**로 “AI 운영 없이” 음성 기반 제어 경험을 제공하지만,
+장기적으로는 사용자 설정을 중심으로 **계정/디바이스/씬/프롬프트/단축어 배포**까지 자동으로 이어지는
+**통합 Home Control Plane**을 목표로 합니다.
 
-HomeMCP의 궁극적인 목표는 다음과 같습니다.
+아래는 HomeMCP가 지향하는 “궁극적인 통합 시나리오”입니다.
 
 - 사용자는 단일 GUI 또는 CLI 환경에서
   - Tuya 계정 인증
@@ -209,6 +222,11 @@ sequenceDiagram
   - 취침 모드  
 - Windows PC 제어 (화면 제어, 앱 실행 등 – Agent 기반)
 
+<details>
+<summary><b>Control URL Specification (API)</b> — 자세한 스펙은 접어두었습니다</summary>
+
+---
+
 ## Control URL Specification (HomeMCP v1)
 
 HomeMCP는 **URL 기반 제어 규칙**을 중심으로 음성 명령, LLM, 자동화를 연결합니다.
@@ -271,6 +289,10 @@ Examples:
 
 이 URL 구조는 음성 명령, 자동화 루틴, LLM 기반 해석 결과를
 **하나의 공통 실행 포맷**으로 통합하기 위한 HomeMCP의 핵심 설계입니다.
+
+---
+
+</details>
 
 ---
 
