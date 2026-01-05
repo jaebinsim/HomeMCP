@@ -40,6 +40,10 @@ _BASE_DIR = Path(__file__).resolve().parents[3]
 _CONFIG_DIR = _BASE_DIR / "config"
 _DEVICES_FILE = _CONFIG_DIR / "devices.toml"
 
+# In-process cache to avoid requiring server restarts on config edits.
+_DEVICE_REGISTRY_CACHE: Dict[str, DeviceInfo] | None = None
+_DEVICE_REGISTRY_MTIME_NS: int | None = None
+
 # Keys in DEVICE_REGISTRY are logical device names (e.g. "bed_light", "living_light")
 # defined in config/devices.toml under the [devices.*] tables.
 def _load_device_registry() -> Dict[str, DeviceInfo]:
@@ -61,4 +65,27 @@ def _load_device_registry() -> Dict[str, DeviceInfo]:
     return registry
 
 
-DEVICE_REGISTRY: Dict[str, DeviceInfo] = _load_device_registry()
+
+def get_device_registry() -> Dict[str, DeviceInfo]:
+    """Return the latest device registry, reloading if config/devices.toml changed."""
+    global _DEVICE_REGISTRY_CACHE, _DEVICE_REGISTRY_MTIME_NS
+
+    if not _DEVICES_FILE.exists():
+        _DEVICE_REGISTRY_CACHE = {}
+        _DEVICE_REGISTRY_MTIME_NS = None
+        return _DEVICE_REGISTRY_CACHE
+
+    mtime_ns = _DEVICES_FILE.stat().st_mtime_ns
+    if _DEVICE_REGISTRY_CACHE is None or _DEVICE_REGISTRY_MTIME_NS != mtime_ns:
+        _DEVICE_REGISTRY_CACHE = _load_device_registry()
+        _DEVICE_REGISTRY_MTIME_NS = mtime_ns
+
+    return _DEVICE_REGISTRY_CACHE
+
+
+def get_device_info(device_name: str) -> Optional[DeviceInfo]:
+    return get_device_registry().get(device_name)
+
+
+# Backwards-compatible snapshot (may be stale). Prefer `get_device_registry()`.
+DEVICE_REGISTRY: Dict[str, DeviceInfo] = get_device_registry()
