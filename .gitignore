@@ -149,12 +149,12 @@ env.bak/
 venv.bak/
 
 # HomeMCP runtime config (secrets)
-home-mcp-core/src/home_mcp_core/config/settings.toml
-home-mcp-core/src/home_mcp_core/config/devices.toml
+home-mcp-core/config/settings.toml
+home-mcp-core/config/devices.toml
 
 # Example configs SHOULD be committed
-!src/home_mcp_core/config/settings.example.toml
-!src/home_mcp_core/config/devices.example.toml
+!home-mcp-core/config/settings.example.toml
+!home-mcp-core/config/devices.example.toml
 
 # Spyder project settings
 .spyderproject

@@ -28,7 +28,7 @@ dev = [
 ]
 
 [project.scripts]
-home-mcp-core-cli = "home_mcp_core.cli:app"
+homemcp = "home_mcp_core.cli.main:app"
 
 [build-system]
 requires = ["setuptools>=69.0.0", "wheel"]

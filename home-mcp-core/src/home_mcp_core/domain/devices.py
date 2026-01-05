@@ -33,19 +33,26 @@ class DeviceInfo(BaseModel):
 # TOML 로딩
 # ─────────────────────────────────────────────
 
-_CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
+# Resolve paths robustly (independent of CWD)
+# .../home-mcp-core/src/home_mcp_core/domain/devices.py
+# parents[0]=domain, [1]=home_mcp_core, [2]=src, [3]=home-mcp-core
+_BASE_DIR = Path(__file__).resolve().parents[3]
+_CONFIG_DIR = _BASE_DIR / "config"
 _DEVICES_FILE = _CONFIG_DIR / "devices.toml"
 
 # Keys in DEVICE_REGISTRY are logical device names (e.g. "bed_light", "living_light")
 # defined in config/devices.toml under the [devices.*] tables.
 def _load_device_registry() -> Dict[str, DeviceInfo]:
     if not _DEVICES_FILE.exists():
-        # For Debug
-        raise FileNotFoundError(f"Device config not found: {_DEVICES_FILE}")
+        # Fresh setup: allow server to boot without devices configured yet.
+        return {}
 
     data = tomllib.loads(_DEVICES_FILE.read_text(encoding="utf-8"))
 
     devices_raw = data.get("devices", {})
+    if not isinstance(devices_raw, dict):
+        return {}
+
     registry: Dict[str, DeviceInfo] = {}
 
     for logical_name, cfg in devices_raw.items():

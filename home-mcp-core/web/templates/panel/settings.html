@@ -27,7 +27,7 @@
         </nav>
 
         <div class="sidebar__footer">
-          <div class="kv"><span class="k">File</span><span class="v">{{ path }}</span></div>
+          <div class="kv"><span class="k">File (home-mcp-core/config)</span><span class="v">{{ path }}</span></div>
         </div>
       </aside>
 
@@ -48,8 +48,17 @@
 
         <section class="grid">
           <div class="card">
-            <div class="card__title">Preview (masked)</div>
-            <pre class="pre">{{ preview | tojson(indent=2) }}</pre>
+            <div class="card__title" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span>Preview</span>
+              <button id="revealSecretsBtn" type="button" class="btn small">🙈 Hidden</button>
+            </div>
+            <pre
+              class="pre"
+              id="settingsPreview"
+              data-masked='{{ preview_masked | tojson(indent=2) }}'
+              data-raw='{{ preview_raw | tojson(indent=2) }}'
+            >{{ preview_masked | tojson(indent=2) }}</pre>
+            <div class="muted" id="settingsPreviewHint">Secrets are masked by default.</div>
           </div>
 
           <div class="card">
@@ -72,6 +81,48 @@
     <script src="/static/panel.js"></script>
     <script>
       window.HomeMCP && window.HomeMCP.bootSettings && window.HomeMCP.bootSettings();
+    </script>
+    <script>
+      // Settings preview secrets toggle (masked by default)
+      (function () {
+        const pre = document.getElementById('settingsPreview');
+        const btn = document.getElementById('revealSecretsBtn');
+        const hint = document.getElementById('settingsPreviewHint');
+        if (!pre || !btn) return;
+
+        const masked = pre.getAttribute('data-masked') || '';
+        const raw = pre.getAttribute('data-raw') || '';
+
+        const hasRaw = raw.trim().length > 2 && raw.trim() !== 'null';
+        if (!hasRaw) {
+          btn.disabled = true;
+          btn.textContent = '🙈 Hidden';
+          if (hint) hint.textContent = 'Secrets are masked. (Raw preview not available.)';
+          return;
+        }
+
+        let revealed = false;
+        const apply = () => {
+          pre.textContent = revealed ? raw : masked;
+          btn.textContent = revealed ? '🙉 Shown' : '🙈 Hidden';
+          if (hint) {
+            hint.textContent = revealed
+              ? 'Secrets are visible. Be careful when sharing screenshots.'
+              : 'Secrets are masked by default.';
+          }
+        };
+
+        btn.addEventListener('click', () => {
+          if (!revealed) {
+            const ok = window.confirm('Reveal secrets in this browser tab?\n\nBe careful when sharing screenshots.');
+            if (!ok) return;
+          }
+          revealed = !revealed;
+          apply();
+        });
+
+        apply();
+      })();
     </script>
   </body>
 </html>
