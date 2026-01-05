@@ -20,8 +20,9 @@ TEMPLATES_DIR = WEB_DIR / "templates"
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-SETTINGS_FILE = BASE_DIR / "src" / "home_mcp_core" / "config" / "settings.toml"
-DEVICES_FILE = BASE_DIR / "src" / "home_mcp_core" / "config" / "devices.toml"
+# Config lives at repo root: home-mcp-core/config/*.toml
+SETTINGS_FILE = BASE_DIR / "config" / "settings.toml"
+DEVICES_FILE = BASE_DIR / "config" / "devices.toml"
 
 # ─────────────────────────────────────────────────────────────
 # Simple in-process cache (reloads automatically when files change)
@@ -91,6 +92,8 @@ def _render_or_error(request: Request, template_name: str, context: Dict[str, An
             f"TEMPLATES_DIR: {TEMPLATES_DIR}\n"
             f"SETTINGS_FILE: {SETTINGS_FILE}\n"
             f"DEVICES_FILE: {DEVICES_FILE}\n"
+            f"SETTINGS_FILE exists: {SETTINGS_FILE.exists()}\n"
+            f"DEVICES_FILE exists: {DEVICES_FILE.exists()}\n"
         )
         return HTMLResponse(
             "<!doctype html><html><body style='font-family: ui-monospace, monospace; white-space: pre-wrap; padding: 20px;'>"
