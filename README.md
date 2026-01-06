@@ -1,6 +1,6 @@
 🇰🇷 [한국어 README 보기](README.ko.md)
 
-# HomeMCP
+# IntentCP
 
 > **A smart-home orchestrator powered by iOS Shortcuts — a zero‑infrastructure AI experience**
 >
@@ -10,8 +10,8 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![iOS Shortcuts](https://img.shields.io/badge/iOS-Shortcuts-FF4A00.svg?logo=shortcuts&logoColor=white)](https://support.apple.com/guide/shortcuts/welcome/ios)
 
-HomeMCP is a **voice-first smart home orchestration system** integrated with **iOS Shortcuts**.
-You don’t need to host your own AI (local LLM / paid model server). Instead, HomeMCP leverages **Apple Intelligence features available inside Shortcuts (private cloud)** and **ChatGPT (optional, if you have an account)** to:
+IntentCP is a **voice-first smart home orchestration system** integrated with **iOS Shortcuts**.
+You don’t need to host your own AI (local LLM / paid model server). Instead, IntentCP leverages **Apple Intelligence features available inside Shortcuts (private cloud)** and **ChatGPT (optional, if you have an account)** to:
 
 - turn natural language into a **safe, executable control request** (LLM #1)
 - return a **short, friendly one-line voice feedback** from the actual device result (LLM #2)
@@ -21,14 +21,14 @@ It also standardizes execution using a **Control URL spec** (`/tuya/{device}/{ac
 **TL;DR**
 - 📱 **Shortcuts-first UX**: start with “Hey Siri” + a Shortcut — no extra app required
 - 🤖 **No AI hosting required**: use Shortcuts’ Apple Intelligence (private cloud) / ChatGPT (optional)
-- 🎙️ Speak → **LLM #1** generates a Control URL → HomeMCP executes on real devices
+- 🎙️ Speak → **LLM #1** generates a Control URL → IntentCP executes on real devices
 - 🔁 Result JSON → **LLM #2** produces a one-line response → Siri reads it via TTS
 - 🧩 Tuya-first, designed to extend to external controllers (e.g., Windows Agent)
 
-## ✨ Why HomeMCP?
+## ✨ Why IntentCP?
 
 - **🚫 Zero AI ops**: no GPU, no local LLM hosting — reuse the AI already available in Shortcuts (and ChatGPT optionally).
-- **🧠 Runs on ultra-low-spec hardware**: HomeMCP Core does not assume a powerful machine.
+- **🧠 Runs on ultra-low-spec hardware**: IntentCP Core does not assume a powerful machine.
   - no dedicated LLM server, no GPU, no high-memory environment required
   - proven to run in real-world daily use on a **Raspberry Pi Zero 2W**
 - **🗣️ Real intent-based control**: not just fixed commands like “turn on the light,” but “set things up for movie night.”
@@ -37,10 +37,10 @@ It also standardizes execution using a **Control URL spec** (`/tuya/{device}/{ac
 
 ## 🚀 The Vision: Home Master Control Plane
 
-HomeMCP is not just a bridge. It aims to become a **central Control Plane** that unifies home devices/states/scenes into
+IntentCP is not just a bridge. It aims to become a **central Control Plane** that unifies home devices/states/scenes into
 **LLM-readable context**, and evolves into a **Home-to-LLM Protocol**.
 
-Today, HomeMCP delivers a lightweight, practical “MCP” via iOS Shortcuts.
+Today, IntentCP delivers a lightweight, practical “MCP” via iOS Shortcuts.
 Long-term, it plans to offer an (optional) **standard MCP (Model Context Protocol) interface** for integration with external Tool Hosts/clients.
 
 ---
@@ -48,7 +48,7 @@ Long-term, it plans to offer an (optional) **standard MCP (Model Context Protoco
 ## Demo
 
 Below are short real-world demos showing **natural language voice commands**
-executed through iOS Shortcuts → HomeMCP → real devices.
+executed through iOS Shortcuts → IntentCP → real devices.
 
 ### 🎥 Demo 1 — “Make the house feel cozy”
 
@@ -97,7 +97,7 @@ Verify the core loop in three steps:
   - no local LLM, no dedicated model server, no GPU/VRAM
   - supports **Apple Intelligence inside Shortcuts (private cloud)** + **ChatGPT (optional)**
 - 🧠 **Lightweight Core Server**
-  - HomeMCP Core focuses on orchestration (HTTP control + device gateway)
+  - IntentCP Core focuses on orchestration (HTTP control + device gateway)
   - designed to run 24/7 on low-power home servers (e.g., Raspberry Pi / mini PC)
 - 🧠 **Two-stage LLM pipeline (as a product feature)**
   - **LLM #1**: natural language → **Control URL** (safe execution format)
@@ -113,17 +113,17 @@ Verify the core loop in three steps:
 
 ## System Overview
 
-AI Assistant (Siri) → iOS Shortcuts → LLM #1 → HomeMCP Server → (Tuya Cloud | Windows Agent) → Physical Devices  
-Physical Devices → (Tuya Cloud | Windows Agent) → HomeMCP Server → LLM #2 → iOS Shortcuts → AI Assistant (Siri)
+AI Assistant (Siri) → iOS Shortcuts → LLM #1 → IntentCP Server → (Tuya Cloud | Windows Agent) → Physical Devices  
+Physical Devices → (Tuya Cloud | Windows Agent) → IntentCP Server → LLM #2 → iOS Shortcuts → AI Assistant (Siri)
 
 ---
 
 ## Repository Structure
 
-This project is a **monorepo**, where each subdirectory represents a core component of the HomeMCP pipeline.
+This project is a **monorepo**, where each subdirectory represents a core component of the IntentCP pipeline.
 
 ```bash
-HomeMCP/
+IntentCP/
   README.md                         # Project overview (EN)
   README.ko.md                      # Project overview (KO)
 
@@ -147,13 +147,13 @@ HomeMCP/
 
 ---
 
-## What is HomeMCP?
+## What is IntentCP?
 
-HomeMCP is **Shortcuts-first today** (so you can start without running your own AI),
+IntentCP is **Shortcuts-first today** (so you can start without running your own AI),
 but long-term it aims to become an **integrated Home Control Plane** that automatically connects
 accounts/devices/scenes/prompts and voice shortcut distribution from a single configuration.
 
-Below is the “ultimate integration scenario” HomeMCP is aiming for.
+Below is the “ultimate integration scenario” IntentCP is aiming for.
 
 ### Ultimate Vision
 
@@ -164,13 +164,13 @@ From a single GUI or CLI, users will be able to:
 - Assign human-friendly aliases
 - Define custom Scenes
 
-Based on this configuration, HomeMCP automatically generates:
+Based on this configuration, IntentCP automatically generates:
 
 - `home-mcp-core` server configuration
 - LLM control & response prompts
 - Siri Shortcut distribution links
 
-In other words, HomeMCP aims to become:
+In other words, IntentCP aims to become:
 
 > **A unified orchestration system that turns user configuration into server logic, LLM behavior, and voice shortcuts automatically.**
 
@@ -184,7 +184,7 @@ sequenceDiagram
     participant Siri as Siri
     participant Shortcuts as iOS Shortcuts (Signal)
     participant LLM1 as LLM #1 (URL Generator)
-    participant HomeMCP as HomeMCP Server
+    participant IntentCP as IntentCP Server
     participant Tuya as Tuya Cloud
     participant LLM2 as LLM #2 (Response Summarizer)
 
@@ -196,10 +196,10 @@ sequenceDiagram
     Shortcuts->>LLM1: Forward command
     LLM1-->>Shortcuts: Return Control URL path (single line)
 
-    Shortcuts->>HomeMCP: HTTP GET/POST /tuya/living_light/on
-    HomeMCP->>Tuya: Device Control API call
-    Tuya-->>HomeMCP: Control result (JSON)
-    HomeMCP-->>Shortcuts: JSON response
+    Shortcuts->>IntentCP: HTTP GET/POST /tuya/living_light/on
+    IntentCP->>Tuya: Device Control API call
+    Tuya-->>IntentCP: Control result (JSON)
+    IntentCP-->>Shortcuts: JSON response
 
     Shortcuts->>LLM2: Original command + JSON result
     LLM2-->>Shortcuts: One-sentence response
@@ -217,7 +217,7 @@ sequenceDiagram
 | AI Assistant (Siri) | Voice trigger |
 | iOS Shortcuts | Speech-to-text, LLM calls, HTTP execution, TTS output |
 | LLM #1 | Natural language → control URL path |
-| HomeMCP Server | Personal MCP server + IoT gateway |
+| IntentCP Server | Personal MCP server + IoT gateway |
 | Tuya Cloud | Real-world IoT device control |
 | LLM #2 | Control JSON → natural language response |
 
@@ -239,9 +239,9 @@ sequenceDiagram
 <details>
 <summary><b>Control URL Specification (API)</b> — expanded spec (click to open)</summary>
 
-## Control URL Specification (HomeMCP v1)
+## Control URL Specification (IntentCP v1)
 
-HomeMCP uses a **URL-based control scheme** that unifies voice commands, LLM output, and automation routines.  
+IntentCP uses a **URL-based control scheme** that unifies voice commands, LLM output, and automation routines.  
 All controls can be executed via HTTP **GET / POST**, and this specification is the contract used by **LLM #1**.
 
 ### 1) Single Action
@@ -295,7 +295,7 @@ Examples:
 /tuya/sequence?actions=living_light:on,living_light:off?delay=7200,pc:off?delay=3600
 ```
 
-This URL scheme is a core design of HomeMCP to standardize execution across voice, LLM, and automation.
+This URL scheme is a core design of IntentCP to standardize execution across voice, LLM, and automation.
 
 ---
  </details>
@@ -330,8 +330,8 @@ This URL scheme is a core design of HomeMCP to standardize execution across voic
 ### 1) Clone
 
 ```bash
-git clone https://github.com/jaebinsim/HomeMCP
-cd HomeMCP
+git clone https://github.com/jaebinsim/IntentCP
+cd IntentCP
 ```
 
 ### 2) (Optional) Install / pin Python with pyenv (macOS)
@@ -357,7 +357,7 @@ python -m pip install --upgrade pip
 
 ### 4) Install `home-mcp-core`
 
-HomeMCP is a monorepo, but **Python dependencies are currently managed in `home-mcp-core/pyproject.toml`**.  
+IntentCP is a monorepo, but **Python dependencies are currently managed in `home-mcp-core/pyproject.toml`**.  
 For the initial run, installing `home-mcp-core` is enough.
 
 ```bash
@@ -433,7 +433,7 @@ Follow the setup guide:
 ## 📱 Siri Shortcuts (Signal) – Related Documentation
 
 The documents below explain how these prompts are actually used inside the
-**HomeMCP Signal iOS Shortcut**, from installation to full configuration.
+**IntentCP Signal iOS Shortcut**, from installation to full configuration.
 
 If you are setting up voice control for the first time, it is recommended
 to read them in order.

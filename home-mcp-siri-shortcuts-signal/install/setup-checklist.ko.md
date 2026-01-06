@@ -1,6 +1,6 @@
-# HomeMCP Signal Shortcut – Setup Checklist
+# IntentCP Signal Shortcut – Setup Checklist
 
-이 문서는 **HomeMCP + iOS 단축어(Signal)** 를 처음 설정할 때 필요한 최소 체크리스트입니다.  
+이 문서는 **IntentCP + iOS 단축어(Signal)** 를 처음 설정할 때 필요한 최소 체크리스트입니다.  
 아래 항목을 **위에서부터 순서대로** 확인하면 정상 동작 여부를 빠르게 검증할 수 있습니다.
 
 ---
@@ -9,10 +9,10 @@
 
 - [ ] iOS 기기 (iPhone / iPad)
 - [ ] iOS **단축어(Shortcuts)** 앱 설치
-- [ ] HomeMCP Core 서버 실행 중
+- [ ] IntentCP Core 서버 실행 중
   - 예: `http://127.0.0.1:8000`
   - 외부 접근 시 HTTPS 권장
-- [ ] HomeMCP Core에 디바이스 등록 완료 (`devices.toml`)
+- [ ] IntentCP Core에 디바이스 등록 완료 (`devices.toml`)
 
 ---
 
@@ -63,9 +63,9 @@ Signal 단축어는 음성 입력과 네트워크 요청을 사용합니다.
 
 ---
 
-## 4. HomeMCP 서버 주소(Base URL) 설정
+## 4. IntentCP 서버 주소(Base URL) 설정
 
-배포용 Signal 단축어에는 **HomeMCP 서버 주소(Base URL)** 가 기본값으로 포함되어 있습니다.  
+배포용 Signal 단축어에는 **IntentCP 서버 주소(Base URL)** 가 기본값으로 포함되어 있습니다.  
 사용 환경에 맞게 반드시 수정해야 합니다.
 
 ### 예시
@@ -89,7 +89,7 @@ Signal 단축어는 음성 입력과 네트워크 요청을 사용합니다.
 Signal.shortcut 에서는 Base URL이 별도의 입력 필드로 분리되어 있습니다.
 
 이 필드에는 다음 값만 입력해야 합니다.
-- HomeMCP 서버의 호스트 + 포트 (또는 도메인)
+- IntentCP 서버의 호스트 + 포트 (또는 도메인)
 
 예:
 - http://127.0.0.1:8000
@@ -122,7 +122,7 @@ Signal 단축어는 **2단계 LLM 구조(LLM #1 / LLM #2)** 로 동작합니다.
 Signal.shortcut 에서 사용자가 반드시 설정해야 하는 항목은 아래 3가지입니다.
 
 1. **Base URL**
-   - HomeMCP 서버 주소
+   - IntentCP 서버 주소
    - HTTP 요청 액션에서 사용
 
 2. **LLM #1 프롬프트 (URL Generator)**
@@ -164,7 +164,7 @@ LLM 프롬프트 및 HTTP 요청 액션에는
 
 **역할**
 - 사용자 음성/텍스트 명령을  
-- HomeMCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
+- IntentCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
 
 **프롬프트 파일**
 - `prompts/llm1_url_generator/v1.md`
@@ -178,7 +178,7 @@ LLM 프롬프트 및 HTTP 요청 액션에는
 ### 5-4) LLM #2 – Response Summarizer
 
 **역할**
-- HomeMCP 서버 응답(JSON)을  
+- IntentCP 서버 응답(JSON)을  
 - 사용자에게 들려줄 **한 문장 응답**으로 요약
 
 **프롬프트 파일**
@@ -248,7 +248,7 @@ LLM 프롬프트 및 HTTP 요청 액션에는
 ## 7. 문제 해결 가이드
 
 ### ❌ 아무 반응이 없을 때
-- HomeMCP 서버 실행 여부 확인
+- IntentCP 서버 실행 여부 확인
 - Base URL 오타 여부 확인
 - iOS 네트워크 권한 허용 여부 확인
 

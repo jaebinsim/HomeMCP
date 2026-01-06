@@ -3,7 +3,7 @@
 # iCloud Install Link – Signal.shortcut
 
 This document manages the **installation link (iCloud shared link)** and version information  
-for the **HomeMCP Signal iOS Shortcut**.
+for the **IntentCP Signal iOS Shortcut**.
 
 > The shortcut files are also included in this repository:
 > - `shortcuts/Signal.shortcut` : Actual shortcut for real use / distribution
@@ -20,7 +20,7 @@ for the **HomeMCP Signal iOS Shortcut**.
   - iCloud link: https://www.icloud.com/shortcuts/c75b978c658d4661a695ca70aaff7078
   - Target: General users / real-use shortcut
   - Changes:
-    - Support for HomeMCP v1 URL scheme
+    - Support for IntentCP v1 URL scheme
     - User-configurable Base URL and LLM prompts
 
 ---

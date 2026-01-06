@@ -2,21 +2,21 @@
 
 # Prompts (LLM #1 / LLM #2)
 
-This directory contains versioned LLM prompts used by the **HomeMCP Signal iOS Shortcut**.
+This directory contains versioned LLM prompts used by the **IntentCP Signal iOS Shortcut**.
 Users are expected to copy these prompts and paste them directly into the iOS Shortcuts app (Signal shortcut).
 
 ---
 
 ## Prompt Architecture
 
-The HomeMCP Signal shortcut operates using a **two-stage LLM architecture**.
+The IntentCP Signal shortcut operates using a **two-stage LLM architecture**.
 
 - **LLM #1 – URL Generator**
   - Converts user voice/text commands
-  - Into a single executable **HomeMCP Control URL**
+  - Into a single executable **IntentCP Control URL**
 
 - **LLM #2 – Response Summarizer**
-  - Converts HomeMCP server responses (JSON)
+  - Converts IntentCP server responses (JSON)
   - Into a **single, user-friendly spoken sentence**
 
 ---

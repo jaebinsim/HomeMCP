@@ -1,7 +1,7 @@
-# HomeMCP Signal (iOS Shortcut)
+# IntentCP Signal (iOS Shortcut)
 
-**HomeMCP Signal**은 iOS 단축어(Siri Shortcuts)를 통해
-자연어 음성 명령을 **HomeMCP 서버 제어 요청(URL)** 으로 연결하는
+**IntentCP Signal**은 iOS 단축어(Siri Shortcuts)를 통해
+자연어 음성 명령을 **IntentCP 서버 제어 요청(URL)** 으로 연결하는
  음성 인터페이스 레이어입니다.
 
 이 저장소는 **iOS 단축어 배포와 사용자 설정**에 초점을 둡니다.
@@ -16,7 +16,7 @@
 
 ---
 
-## 전체 HomeMCP 구조에서의 위치
+## 전체 IntentCP 구조에서의 위치
 
 ```
 [사용자 음성]
@@ -25,14 +25,14 @@
       ↓
 [LLM #1] 자연어 → Control URL
       ↓
-[HomeMCP Core Server]
+[IntentCP Core Server]
       ↓
 [IoT / Device / Agent]
       ↓
 [LLM #2] 응답 요약 → 사용자
 ```
 
-Signal 단축어는 위 흐름에서 **Siri ↔ HomeMCP Core를 연결하는 진입점** 역할을 합니다.
+Signal 단축어는 위 흐름에서 **Siri ↔ IntentCP Core를 연결하는 진입점** 역할을 합니다.
 
 ---
 
@@ -60,10 +60,10 @@ Signal 단축어는 **2단계 LLM 구조**로 동작합니다.
 
 ### LLM #1 – URL Generator
 - 사용자 음성/텍스트 명령을
-- HomeMCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
+- IntentCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
 
 ### LLM #2 – Response Summarizer
-- HomeMCP 서버 응답(JSON)을
+- IntentCP 서버 응답(JSON)을
 - 사용자에게 들려줄 **한 문장 응답**으로 요약
 
 프롬프트 파일 위치:

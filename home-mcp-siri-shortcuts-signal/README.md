@@ -1,13 +1,13 @@
 🇰🇷 [한국어 README 보기](README.ko.md)
 
-# HomeMCP Signal (iOS Shortcut)
+# IntentCP Signal (iOS Shortcut)
 
-**HomeMCP Signal** is a voice interface layer that connects
+**IntentCP Signal** is a voice interface layer that connects
 natural language voice commands from **iOS Siri Shortcuts**
-to executable **HomeMCP server control requests (URLs)**.
+to executable **IntentCP server control requests (URLs)**.
 
 This repository focuses on **iOS Shortcut distribution and user configuration**
-within the HomeMCP ecosystem.
+within the IntentCP ecosystem.
 
 ---
 
@@ -19,7 +19,7 @@ within the HomeMCP ecosystem.
 
 ---
 
-## Position in the overall HomeMCP architecture
+## Position in the overall IntentCP architecture
 
 ```
 [User Voice]
@@ -28,14 +28,14 @@ within the HomeMCP ecosystem.
       ↓
 [LLM #1] Natural Language → Control URL
       ↓
-[HomeMCP Core Server]
+[IntentCP Core Server]
       ↓
 [IoT / Device / Agent]
       ↓
 [LLM #2] Response Summary → User
 ```
 
-The Signal shortcut acts as the **entry point that bridges Siri and the HomeMCP Core server**.
+The Signal shortcut acts as the **entry point that bridges Siri and the IntentCP Core server**.
 
 ---
 
@@ -65,10 +65,10 @@ The Signal shortcut uses a **two-stage LLM pipeline**.
 
 ### LLM #1 – URL Generator
 - Converts user voice or text input
-- Into a single executable **HomeMCP Control URL**
+- Into a single executable **IntentCP Control URL**
 
 ### LLM #2 – Response Summarizer
-- Converts HomeMCP server responses (JSON)
+- Converts IntentCP server responses (JSON)
 - Into a **single, natural sentence** spoken back to the user
 
 Prompt file locations:

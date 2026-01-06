@@ -1,8 +1,8 @@
 🇰🇷 [한국어 README 보기](setup-checklist.ko.md)
 
-# HomeMCP Signal Shortcut – Setup Checklist
+# IntentCP Signal Shortcut – Setup Checklist
 
-This document is a **minimal setup checklist** required to configure **HomeMCP + iOS Shortcut (Signal)** for the first time.
+This document is a **minimal setup checklist** required to configure **IntentCP + iOS Shortcut (Signal)** for the first time.
 By following the steps **from top to bottom**, you can quickly verify that everything is working correctly.
 
 ---
@@ -11,10 +11,10 @@ By following the steps **from top to bottom**, you can quickly verify that every
 
 - [ ] iOS device (iPhone / iPad)
 - [ ] iOS **Shortcuts** app installed
-- [ ] HomeMCP Core server running
+- [ ] IntentCP Core server running
   - Example: `http://127.0.0.1:8000`
   - HTTPS is recommended for external access
-- [ ] Devices registered in HomeMCP Core (`devices.toml`)
+- [ ] Devices registered in IntentCP Core (`devices.toml`)
 
 ---
 
@@ -66,9 +66,9 @@ If the following permissions are not granted, it will not function correctly.
 
 ---
 
-## 4. HomeMCP Server Address (Base URL)
+## 4. IntentCP Server Address (Base URL)
 
-The distributed Signal shortcut includes a default **HomeMCP server Base URL**.
+The distributed Signal shortcut includes a default **IntentCP server Base URL**.
 You must modify it to match your environment.
 
 ### Examples
@@ -92,7 +92,7 @@ In the shortcut edit screen, check the following locations:
 In `Signal.shortcut`, the Base URL is separated into its own input field.
 
 This field must contain **only**:
-- HomeMCP server host + port (or domain)
+- IntentCP server host + port (or domain)
 
 Examples:
 - http://127.0.0.1:8000
@@ -124,7 +124,7 @@ The Signal shortcut operates using a **two-stage LLM architecture (LLM #1 / LLM 
 Users must configure the following three items in `Signal.shortcut`:
 
 1. **Base URL**
-   - HomeMCP server address
+   - IntentCP server address
    - Used by the HTTP Request action
 
 2. **LLM #1 Prompt (URL Generator)**
@@ -166,7 +166,7 @@ You may choose any of the following:
 
 **Role**
 - Converts user voice/text commands
-- Into a single executable **HomeMCP Control URL**
+- Into a single executable **IntentCP Control URL**
 
 **Prompt file**
 - `prompts/llm1_url_generator/v1.md`
@@ -180,7 +180,7 @@ You may choose any of the following:
 ### 5-4) LLM #2 – Response Summarizer
 
 **Role**
-- Converts HomeMCP server responses (JSON)
+- Converts IntentCP server responses (JSON)
 - Into a **single spoken sentence** for the user
 
 **Prompt file**
@@ -247,7 +247,7 @@ Expected result:
 ## 7. Troubleshooting
 
 ### ❌ No response at all
-- Verify the HomeMCP server is running
+- Verify the IntentCP server is running
 - Check for Base URL typos
 - Confirm iOS network permissions
 

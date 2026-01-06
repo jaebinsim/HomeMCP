@@ -1,6 +1,6 @@
 # iCloud Install Link – Signal.shortcut
 
-이 문서는 **HomeMCP Signal 단축어** 설치 링크(아이클라우드 공유 링크)와 버전 정보를 관리합니다.
+이 문서는 **IntentCP Signal 단축어** 설치 링크(아이클라우드 공유 링크)와 버전 정보를 관리합니다.
 
 > 단축어 파일은 저장소에도 포함되어 있습니다:
 > - `shortcuts/Signal.shortcut` : 실제 사용/배포용 단축어
@@ -16,7 +16,7 @@
   - iCloud 링크: https://www.icloud.com/shortcuts/c75b978c658d4661a695ca70aaff7078
   - 대상: 일반 사용자 / 실제 사용용 단축어
   - 변경사항:
-    - HomeMCP v1 URL Scheme 지원
+    - IntentCP v1 URL Scheme 지원
     - Base URL / LLM 프롬프트 사용자 설정 방식
 
 ---

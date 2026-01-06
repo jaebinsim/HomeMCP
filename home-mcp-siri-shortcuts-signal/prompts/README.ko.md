@@ -1,20 +1,20 @@
 # Prompts (LLM #1 / LLM #2)
 
-이 폴더는 **HomeMCP Signal 단축어**에서 사용하는 LLM 프롬프트를 버전별로 관리합니다.  
+이 폴더는 **IntentCP Signal 단축어**에서 사용하는 LLM 프롬프트를 버전별로 관리합니다.  
 사용자는 이 폴더의 프롬프트를 복사하여 iOS 단축어(Signal)에 직접 붙여넣어 사용합니다.
 
 ---
 
 ## 프롬프트 구조
 
-HomeMCP Signal 단축어는 **2단계 LLM 구조**로 동작합니다.
+IntentCP Signal 단축어는 **2단계 LLM 구조**로 동작합니다.
 
 - **LLM #1 – URL Generator**
   - 사용자 음성/텍스트 명령을
-  - HomeMCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
+  - IntentCP 서버에서 실행 가능한 **Control URL 한 줄**로 변환
 
 - **LLM #2 – Response Summarizer**
-  - HomeMCP 서버 응답(JSON)을
+  - IntentCP 서버 응답(JSON)을
   - 사용자가 듣기 좋은 **한 문장 응답**으로 요약
 
 ---
