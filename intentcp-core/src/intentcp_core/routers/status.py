@@ -1,4 +1,4 @@
-# src/home_mcp_core/routers/status.py
+# src/intentcp_core/routers/status.py
 from fastapi import APIRouter, HTTPException
 from ..services.tuya_client import tuya_client
 

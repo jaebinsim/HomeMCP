@@ -12,7 +12,7 @@ from ..services.tuya_client import tuya_client
 
 router = APIRouter()
 
-# --- New URL scheme (HomeMCP v1):
+# --- New URL scheme (IntentCP v1):
 # Single action:
 #   /{device}/{action}[?delay=seconds]
 # Sequence:
@@ -129,7 +129,7 @@ def _execute_single_action_now(device_name: str, action: str) -> dict[str, Any]:
     raise HTTPException(status_code=400, detail=f"Unknown action: {action}")
 
 
-# --- HomeMCP v1 routes ---
+# --- IntentCP v1 routes ---
 
 @router.post("/{device_name}/{action}")
 @router.get("/{device_name}/{action}")

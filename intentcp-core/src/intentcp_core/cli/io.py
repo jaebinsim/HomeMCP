@@ -10,9 +10,9 @@ def _core_root() -> Path:
     """Resolve the `intentcp-core` package root directory.
 
     This file lives at:
-      intentcp-core/src/home_mcp_core/cli/io.py
+      intentcp-core/src/intentcp_core/cli/io.py
     So parents (Path.parents):
-      0=cli, 1=home_mcp_core, 2=src, 3=intentcp-core
+      0=cli, 1=intentcp_core, 2=src, 3=intentcp-core
 
     We store runtime config files in (spec):
       intentcp-core/config/
@@ -30,7 +30,7 @@ def default_devices_path() -> Path:
 
 
 def config_dir() -> Path:
-    """Return the HomeMCP core config directory (spec)."""
+    """Return the IntentCP core config directory (spec)."""
     return _core_root() / "config"
 
 
@@ -67,7 +67,7 @@ def _toml_dump(obj: Any, indent: int = 0) -> str:
     - str/int/float/bool
     - nested dicts as tables
 
-    It is intentionally minimal for HomeMCP config needs.
+    It is intentionally minimal for IntentCP config needs.
     """
 
     lines: list[str] = []

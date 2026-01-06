@@ -1,4 +1,4 @@
-# src/home_mcp_core/app.py
+# src/intentcp_core/app.py
 from pathlib import Path
 import os
 
@@ -11,7 +11,7 @@ from .routers import control, panel, status, health
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="HomeMCP Core",
+        title="IntentCP Core",
         version="0.1.0",
     )
 
@@ -35,7 +35,7 @@ def create_app() -> FastAPI:
         # Uvicorn commonly uses PORT; fall back to 8000 if not set
         port = os.getenv("PORT") or os.getenv("UVICORN_PORT") or "8000"
         rich_print(
-            "\n[bold green]🚀 HomeMCP server is running[/bold green]\n"
+            "\n[bold green]🚀 IntentCP server is running[/bold green]\n"
             "Web Panel:\n"
             f"[bold cyan]👉 http://{host}:{port}/panel/[/bold cyan]\n"
             "[dim]If you are running on a different host or port, adjust the URL accordingly.[/dim]\n"

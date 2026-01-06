@@ -1,4 +1,4 @@
-# src/home_mcp_core/services/windows_agent.py
+# src/intentcp_core/services/windows_agent.py
 import httpx
 from ..config.settings import settings
 

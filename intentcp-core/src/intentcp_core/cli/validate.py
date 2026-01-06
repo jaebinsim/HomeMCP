@@ -8,7 +8,7 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 
-from home_mcp_core.cli.io import default_devices_path, default_settings_path, load_toml_if_exists
+from intentcp_core.cli.io import default_devices_path, default_settings_path, load_toml_if_exists
 
 
 console = Console()
@@ -31,7 +31,7 @@ def _human_hint_for_failure(msg: str) -> str:
     if "not found" in lower or "404" in lower:
         return "Endpoint not found. Region/endpoint mismatch is a common cause."
     if "region" in lower or "endpoint" in lower:
-        return "Region/endpoint mismatch. Try selecting a different region in `homemcp init`."
+        return "Region/endpoint mismatch. Try selecting a different region in `intentcp init`."
     return "Double-check your credentials and region. Region mismatch is the most common cause."
 
 
@@ -80,7 +80,7 @@ def validate_tuya_credentials(
 ) -> Tuple[bool, str]:
     """Validate Tuya credentials by performing a real OpenAPI connect.
 
-    This matches the runtime behavior of `home_mcp_core.services.tuya_client`:
+    This matches the runtime behavior of `intentcp_core.services.tuya_client`:
     - Create TuyaOpenAPI(endpoint, access_id, access_key)
     - api.connect(username, password, country_code, app_schema)
 
@@ -146,7 +146,7 @@ def validate_tuya_credentials(
 
 
 def run_doctor(settings_path: Optional[Path] = None) -> None:
-    """Run configuration diagnostics for HomeMCP."""
+    """Run configuration diagnostics for IntentCP."""
 
     settings_path = settings_path or default_settings_path()
     data = load_toml_if_exists(settings_path)
@@ -155,8 +155,8 @@ def run_doctor(settings_path: Optional[Path] = None) -> None:
         console.print(
             Panel.fit(
                 f"[red]settings.toml not found[/red]\n{settings_path}\n\n"
-                "Run [bold]homemcp init[/bold] to generate it.",
-                title="HomeMCP Doctor",
+                "Run [bold]intentcp init[/bold] to generate it.",
+                title="IntentCP Doctor",
             )
         )
         raise typer.Exit(code=1)
@@ -192,8 +192,8 @@ def run_doctor(settings_path: Optional[Path] = None) -> None:
             Panel.fit(
                 "[red]Missing required config keys:[/red]\n- "
                 + "\n- ".join(missing)
-                + "\n\nRun [bold]homemcp init[/bold] to fix.",
-                title="HomeMCP Doctor",
+                + "\n\nRun [bold]intentcp init[/bold] to fix.",
+                title="IntentCP Doctor",
             )
         )
         raise typer.Exit(code=2)
@@ -223,4 +223,4 @@ def run_doctor(settings_path: Optional[Path] = None) -> None:
         raise typer.Exit(code=3)
 
     console.print(Panel.fit(f"[green]{message}[/green]", title="Tuya Validation OK"))
-    console.print("[green]✅ Your HomeMCP configuration looks good.[/green]")
+    console.print("[green]✅ Your IntentCP configuration looks good.[/green]")

@@ -15,7 +15,7 @@ from rich.prompt import Prompt, Confirm
 
 from .io import default_devices_path
 
-app = typer.Typer(help="Manage HomeMCP devices.toml (alias-based device registry).")
+app = typer.Typer(help="Manage IntentCP devices.toml (alias-based device registry).")
 
 console = Console()
 
@@ -131,10 +131,10 @@ def list_devices(path: Optional[Path] = typer.Option(None, "--path", help="Overr
     _print_path_hint(devices_path)
 
     if not devices:
-        console.print(Panel.fit("No devices configured yet. Use `homemcp devices add`.", title="Devices"))
+        console.print(Panel.fit("No devices configured yet. Use `intentcp devices add`.", title="Devices"))
         raise typer.Exit(code=0)
 
-    table = Table(title="HomeMCP Devices")
+    table = Table(title="IntentCP Devices")
     table.add_column("alias", style="bold")
     table.add_column("kind")
     table.add_column("location")
@@ -367,7 +367,7 @@ def add_device(
     _save_devices(devices_path, devices)
 
     console.print(Panel.fit(
-        f"Added: {common.alias}\n\nRun:\n  homemcp devices show {common.alias}",
+        f"Added: {common.alias}\n\nRun:\n  intentcp devices show {common.alias}",
         title="OK",
         border_style="green",
     ))

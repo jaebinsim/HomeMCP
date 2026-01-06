@@ -81,7 +81,7 @@ executed through iOS Shortcuts → IntentCP → real devices.
 
 Verify the core loop in three steps:
 
-1) Run `homemcp init` to generate your Tuya + device configuration
+1) Run `intentcp init` to generate your Tuya + device configuration
 2) Run the server
 3) Test with `curl` (on/status) or the Web Panel
 
@@ -396,11 +396,11 @@ python -m pip install -e ./intentcp-core
 ### 5) Configure via Wizard (no manual TOML editing)
 
 You no longer need to copy/edit TOML files by hand.
-`homemcp init` guides you through required settings (account/region/devices) and generates config files automatically.
+`intentcp init` guides you through required settings (account/region/devices) and generates config files automatically.
 
 ```bash
-homemcp --help
-homemcp init
+intentcp --help
+intentcp init
 ```
 
 - Generated config files:
@@ -410,7 +410,7 @@ homemcp init
 ### 6) Run the server
 
 ```bash
-uvicorn home_mcp_core.app:app --host 0.0.0.0 --port 8000 --reload
+uvicorn intentcp_core.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 - Web Panel
@@ -420,7 +420,7 @@ uvicorn home_mcp_core.app:app --host 0.0.0.0 --port 8000 --reload
 ### 7) Device management CLI
 
 ```bash
-homemcp devices --help
+intentcp devices --help
 ```
 
 ### 8) Basic control tests (optional)

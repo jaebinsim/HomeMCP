@@ -1,4 +1,4 @@
-# src/home_mcp_core/config/devices.example.toml
+# src/intentcp_core/config/devices.example.toml
 # Example logical device config for Home MCP Core.
 # Copy this file to `devices.toml` and fill in your actual device IDs.
 

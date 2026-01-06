@@ -7,8 +7,8 @@ from pydantic import BaseModel, AnyHttpUrl, Field, ConfigDict
 
 
 # Resolve paths robustly (independent of CWD)
-# .../intentcp-core/src/home_mcp_core/config/settings.py
-# parents[0]=config, [1]=home_mcp_core, [2]=src, [3]=intentcp-core
+# .../intentcp-core/src/intentcp_core/config/settings.py
+# parents[0]=config, [1]=intentcp_core, [2]=src, [3]=intentcp-core
 BASE_DIR = Path(__file__).resolve().parents[3]
 CONFIG_DIR = BASE_DIR / "config"
 
@@ -41,7 +41,7 @@ def load_settings(path: Path | str | None = None) -> Settings:
     path = Path(path)
     if not path.exists():
         raise FileNotFoundError(
-            f"settings.toml not found at {path}. Run `homemcp init` to create it."
+            f"settings.toml not found at {path}. Run `intentcp init` to create it."
         )
     data: dict[str, Any] = tomllib.loads(path.read_text(encoding="utf-8"))
     return Settings.model_validate(data)

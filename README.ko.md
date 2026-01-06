@@ -416,12 +416,12 @@ python -m pip install -e ./intentcp-core
 ### 5) 설정은 Wizard로 끝 (TOML 직접 편집 불필요)
 
 이제부터는 설정 파일을 직접 복사/편집할 필요가 없습니다.
-`homemcp init`이 **Wizard 방식으로** 필요한 설정(계정/리전/디바이스 등)을 안내하고,
+`intentcp init`이 **Wizard 방식으로** 필요한 설정(계정/리전/디바이스 등)을 안내하고,
 완료 후 설정 파일을 자동으로 생성합니다.
 
 ```bash
-homemcp --help
-homemcp init
+intentcp --help
+intentcp init
 ```
 
 - 생성되는 설정 파일 위치:
@@ -431,7 +431,7 @@ homemcp init
 ### 6) 서버 실행 (Core: intentcp-core)
 
 ```bash
-uvicorn home_mcp_core.app:app --reload --host 0.0.0.0 --port 8000
+uvicorn intentcp_core.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
 - Web Panel
@@ -441,7 +441,7 @@ uvicorn home_mcp_core.app:app --reload --host 0.0.0.0 --port 8000
 ### 7) 디바이스 확인/관리 CLI
 
 ```bash
-homemcp devices --help
+intentcp devices --help
 ```
 
 ### 8) 기본 제어 테스트 (선택)

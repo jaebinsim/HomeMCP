@@ -10,14 +10,14 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.table import Table
 
-from home_mcp_core.cli.io import (
+from intentcp_core.cli.io import (
     default_devices_path,
     default_settings_path,
     ensure_parent_dir,
     load_toml_if_exists,
     write_toml,
 )
-from home_mcp_core.cli.validate import validate_tuya_credentials
+from intentcp_core.cli.validate import validate_tuya_credentials
 
 
 console = Console()
@@ -74,7 +74,7 @@ def run_setup_wizard(
     - Writing `settings.toml` safely
     - Validating the config immediately via Tuya token request
 
-    `devices.toml` is not generated yet (future command: `homemcp devices sync`).
+    `devices.toml` is not generated yet (future command: `intentcp devices sync`).
     """
 
     settings_path = settings_path or default_settings_path()
@@ -82,9 +82,9 @@ def run_setup_wizard(
 
     console.print(
         Panel.fit(
-            "This wizard will create/update your HomeMCP config.\n"
+            "This wizard will create/update your IntentCP config.\n"
             "We will validate your Tuya credentials right after saving.",
-            title="HomeMCP Setup",
+            title="IntentCP Setup",
         )
     )
 
@@ -220,7 +220,7 @@ def run_setup_wizard(
     console.print(
         "\n[bold green]Next steps[/bold green]\n"
         "1) Run the server for LAN access (recommended):\n"
-        "   [cyan]uvicorn home_mcp_core.app:app --reload --host 0.0.0.0 --port 8000[/cyan]\n"
+        "   [cyan]uvicorn intentcp_core.app:app --reload --host 0.0.0.0 --port 8000[/cyan]\n"
         "2) Open the Web Panel:\n"
         "   - Local: [cyan]http://127.0.0.1:8000/panel/[/cyan]\n"
         "   - LAN:   [cyan]http://<your-local-ip>:8000/panel/[/cyan]\n"

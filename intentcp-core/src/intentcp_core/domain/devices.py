@@ -1,4 +1,4 @@
-# src/home_mcp_core/domain/devices.py
+# src/intentcp_core/domain/devices.py
 from __future__ import annotations
 
 from enum import Enum
@@ -34,8 +34,8 @@ class DeviceInfo(BaseModel):
 # ─────────────────────────────────────────────
 
 # Resolve paths robustly (independent of CWD)
-# .../intentcp-core/src/home_mcp_core/domain/devices.py
-# parents[0]=domain, [1]=home_mcp_core, [2]=src, [3]=intentcp-core
+# .../intentcp-core/src/intentcp_core/domain/devices.py
+# parents[0]=domain, [1]=intentcp_core, [2]=src, [3]=intentcp-core
 _BASE_DIR = Path(__file__).resolve().parents[3]
 _CONFIG_DIR = _BASE_DIR / "config"
 _DEVICES_FILE = _CONFIG_DIR / "devices.toml"

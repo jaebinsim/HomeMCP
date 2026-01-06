@@ -1,4 +1,4 @@
-# src/home_mcp_core/routers/panel.py
+# src/intentcp_core/routers/panel.py
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,8 +12,8 @@ from fastapi.templating import Jinja2Templates
 router = APIRouter(prefix="/panel", tags=["panel"])
 
 # Resolve paths robustly (independent of CWD)
-# .../intentcp-core/src/home_mcp_core/routers/panel.py
-# parents[0]=routers, [1]=home_mcp_core, [2]=src, [3]=intentcp-core
+# .../intentcp-core/src/intentcp_core/routers/panel.py
+# parents[0]=routers, [1]=intentcp_core, [2]=src, [3]=intentcp-core
 BASE_DIR = Path(__file__).resolve().parents[3]
 WEB_DIR = BASE_DIR / "web"
 TEMPLATES_DIR = WEB_DIR / "templates"

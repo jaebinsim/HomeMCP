@@ -1,7 +1,7 @@
 [project]
-name = "home-mcp-core"
+name = "intentcp-core"
 version = "0.1.0"
-description = "Core MCP server for HomeMCP (FastAPI-based Tuya orchestration layer)"
+description = "IntentCP core server (FastAPI-based orchestration layer)"
 authors = [
   { name = "Sim Jaebin", email = "simjabin@gmail.com" }
 ]
@@ -28,7 +28,7 @@ dev = [
 ]
 
 [project.scripts]
-homemcp = "home_mcp_core.cli.main:app"
+intentcp = "intentcp_core.cli.main:app"
 
 [build-system]
 requires = ["setuptools>=69.0.0", "wheel"]
