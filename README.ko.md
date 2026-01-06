@@ -1,37 +1,44 @@
 # IntentCP
 
-> **AI를 운영하지 않아도 되는, iOS 단축어 기반 스마트홈 오케스트레이터**
-> 
-> *“복잡한 로컬 LLM/GPU 세팅 없이, 아이폰 하나로 자연어 음성 스마트홈을 시작하세요.”*
+> **iOS Shortcuts 기반 자연어 제어를 위한 경량 Control Plane**  
+> 별도의 로컬 LLM이나 GPU 서버 없이, 휴대폰에서 해석한 의도를  
+> **안전한 실행 포맷(Control URL)** 으로 변환해 실제 액션으로 연결합니다.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![iOS Shortcuts](https://img.shields.io/badge/iOS-Shortcuts-FF4A00.svg?logo=shortcuts&logoColor=white)](https://support.apple.com/ko-kr/guide/shortcuts/welcome/ios)
 
+> **Note (이름 혼선 방지)**
+> 
+> IntentCP는 Anthropic의 **Model Context Protocol (MCP)** 구현과 무관합니다.
+> 이 프로젝트에서 말하는 Control Plane은 **자연어 의도 → 실행 요청(Control URL) → 로컬 실행**을 연결하는 아키텍처를 뜻합니다.
 
-IntentCP는 **iOS 단축어(Shortcuts)** 에서 바로 쓸 수 있는 **음성 기반 스마트홈 오케스트레이터**입니다.
-사용자가 별도의 AI(로컬 LLM/유료 모델 서버 등)를 직접 운영하지 않아도, **단축어에서 제공되는 Apple Intelligence(비공개 클라우드)** 와 **ChatGPT(계정 보유 시 선택)** 를 활용해
-자연어 명령을 **안전한 실행 포맷으로 변환**하고, 실제 제어 결과를 **짧고 친절한 한 줄 피드백**으로 돌려줍니다.
+IntentCP는 **자연어 명령을 곧바로 실행하지 않습니다.**  
+대신 자연어를 **표준화된 실행 요청(Control URL)** 으로 변환하고,  
+서버는 정의된 규칙 안에서만 이를 실행하는 구조를 채택합니다.
 
-또한 자연어 음성 명령을 **표준 URL 스펙**(`/tuya/{device}/{action}`)으로 변환해, **브라우저/스크립트/자동화 어디서든 같은 방식으로 실행**할 수 있게 설계했습니다.
+현재는 **iOS Shortcuts-first** 접근을 통해  
+Siri와 휴대폰의 AI(Apple Intelligence / 선택적 ChatGPT)를  
+자연어 해석 레이어로 활용합니다.  
+실행 레이어는 스마트홈(IoT)뿐 아니라 **Windows Agent 등 로컬 시스템 제어**까지 확장 가능하도록 설계되어 있습니다.
 
 **TL;DR**
-- 📱 **iOS 단축어에서 바로 사용**: 별도 앱/모델 서버 없이 “시리야, 시그널”로 시작
-- 🤖 **AI 운영 불필요**: 로컬 LLM·GPU 없이 **단축어의 Apple AI(비공개 클라우드)** / **ChatGPT(선택)** 로 처리
-- 🎙️ *말로 하면* → **LLM #1**이 실행 URL 생성 → IntentCP가 실제 디바이스 제어
-- 🔁 제어 결과(JSON) → **LLM #2**가 한 줄 응답 생성 → Siri가 TTS로 읽어줌
-- 🧩 Tuya-first지만, Windows Agent 등 **외부 제어 대상 확장(Action 매핑)** 을 전제로 설계
+- 📱 **Shortcuts-first UX**: “시리야, 시그널”로 바로 실행
+- 🤖 **No local AI hosting**: 집에 GPU/로컬 LLM 서버 불필요
+- 🔗 **URL 기반 실행 모델**: 자연어 → Control URL → 서버 실행
+- 🧩 **멀티 타깃 제어**: Tuya + Windows Agent 등 실행 대상 확장 전제
 
 ## ✨ 왜 IntentCP인가요?
 
-- **🚫 AI 운영 부담 Zero**: 비싼 GPU도, 복잡한 로컬 LLM 세팅도 필요 없습니다. 단축어의 **Apple Intelligence(비공개 클라우드)** 와 **ChatGPT(선택)** 를 그대로 활용합니다.
-- **🗣️ 진정한 자연어 제어**: “거실 불 켜줘” 같은 고정 커맨드가 아니라, “영화 보기 좋게 세팅해줘” 같은 표현도 **의도 기반으로 해석**합니다.
-- **🔗 URL-First**: 모든 제어는 표준화된 URL 스펙(`/tuya/{device}/{action}`)으로 동작합니다. 음성뿐 아니라 스크립트/자동화/대시보드에서도 같은 방식으로 호출하세요.
-- **🛠️ 확장에 열려있는 구조**: Tuya를 시작으로 Windows Agent, Matter, Zigbee 등 다양한 환경을 하나의 인터페이스로 통합하는 것을 지향합니다.
+- **예측 가능한 실행**: 자연어는 **Control URL**로 정규화되고, 실행은 서버가 정의된 스펙/제약 안에서만 수행합니다.
+- **No local AI hosting**: 집에 GPU/LLM 서버를 두지 않고, 휴대폰(온디바이스/클라우드)의 AI를 활용합니다.
+- **Control URL(표준 실행면)**: 모든 동작은 URL 스펙으로 표현되어 음성/스크립트/자동화가 동일 포맷을 공유합니다.
+- **멀티 타깃 확장**: Tuya → (로컬) Windows Agent → Matter/Zigbee 등, 실행 대상을 플러그인처럼 늘릴 수 있는 구조를 지향합니다.
 
-## 🚀 The Vision: Home Master Control Plane
-IntentCP는 단순한 브릿지가 아닙니다. 집안의 모든 기기/상태/씬(Scene)을 **LLM이 이해할 수 있는 맥락(Context)** 으로 통합하는
-**중앙 제어 평면(Control Plane)** 을 지향합니다.
+## 🚀 The Vision: Intent Control Plane
+
+IntentCP는 “자연어로 말하면 알아서 해주는” 데모가 아니라,
+**의도 해석(LLM) ↔ 실행(Control Plane) ↔ 피드백(LLM/TTS)** 을 분리해 조합 가능한 형태로 만드는 것을 목표로 합니다.
 
 ---
 
@@ -93,7 +100,7 @@ IntentCP/
   README.md                         # Project overview (EN)
   README.ko.md                      # Project overview (KO)
 
-  home-mcp-core/                    # Central MCP server (FastAPI)
+  home-mcp-core/                    # Core server (FastAPI)
     src/                            # Server implementation
     cli/                            # CLI for setup / operations
     pyproject.toml
@@ -117,7 +124,7 @@ IntentCP/
 
 IntentCP는 현재 **iOS Shortcuts-first**로 “AI 운영 없이” 음성 기반 제어 경험을 제공하지만,
 장기적으로는 사용자 설정을 중심으로 **계정/디바이스/씬/프롬프트/단축어 배포**까지 자동으로 이어지는
-**통합 Home Control Plane**을 목표로 합니다.
+**통합 Control Plane**을 목표로 합니다.
 
 아래는 IntentCP가 지향하는 “궁극적인 통합 시나리오”입니다.
 
@@ -157,7 +164,7 @@ sequenceDiagram
 
     %% 3. LLM #1: 명령 URL 생성
     Shortcuts->>LLM1: 자연어 명령 전달
-    LLM1-->>Shortcuts: 실행용 제어 URL 생성<br/>(GET 또는 POST https://<home-mcp-host>/tuya/living_light/on)
+    LLM1-->>Shortcuts: 실행용 제어 URL 생성<br/>(GET 또는 POST https://<intentcp-host>/tuya/living_light/on)
 
     %% 4. IntentCP ↔ Tuya (Device Control)
     Shortcuts->>IntentCP: HTTP GET/POST /tuya/living_light/on
@@ -179,6 +186,33 @@ sequenceDiagram
     Siri-->>User: 음성 피드백
 ```
 
+### (로드맵) `/context` 기반 동적 컨텍스트 주입 플로우
+
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant Siri as Siri
+    participant Shortcuts as iOS Shortcut "시그널"
+    participant IntentCP as IntentCP Server
+    participant LLM1 as LLM #1 (Command Generator)
+
+    %% 1. 단축어 호출
+    User->>Siri: "시리야, 시그널"
+    Siri->>Shortcuts: "시그널" 단축어 실행
+
+    %% 2. 실행 시점 컨텍스트 요청
+    Shortcuts->>IntentCP: HTTP GET /context
+    IntentCP-->>Shortcuts: Device specs + states (JSON)
+    Note over Shortcuts: 컨텍스트를 프롬프트에 주입
+
+    %% 3. LLM #1 호출
+    Shortcuts->>LLM1: 자연어 명령 + Context 전달
+    LLM1-->>Shortcuts: 실행용 제어 URL 생성
+
+    %% 4. 실행 요청
+    Shortcuts->>IntentCP: HTTP GET/POST (Control URL)
+```
+
 ---
 
 ## Component Roles
@@ -189,7 +223,7 @@ sequenceDiagram
 | AI Assistant (Siri) | 음성 명령 트리거 |
 | iOS Shortcuts | 음성 변환, LLM 호출, HTTP 요청, 음성 출력 |
 | LLM #1 | 자연어 명령 → 제어 URL 생성 |
-| IntentCP 서버 | 개인 MCP 서버, Tuya API 중계 |
+| IntentCP 서버 | 개인 실행(Control Plane) 서버, Tuya API 중계 |
 | Tuya Cloud | 실제 IoT 디바이스 제어 |
 | LLM #2 | JSON → 자연어 응답 생성 |
 
@@ -283,6 +317,9 @@ Examples:
 ## Planned Extensions
 
 - 일정 · 날씨 · 위치 · 센서 조건 기반 자동화
+- **(로드맵) 동적 컨텍스트 주입(`/context`)**
+  - Shortcuts가 실행 시점에 IntentCP 서버에서 **디바이스 스펙/상태 컨텍스트**를 받아 프롬프트에 주입
+  - 목적: 존재하지 않는 기기/지원하지 않는 파라미터 생성 가능성을 낮추고, 자연어 → Control URL 변환 품질을 안정화
 - **멀티 IoT 플랫폼 지원**
   - Tuya 외 Cloud API 제공 IoT 플랫폼 연동
   - 벤더 종속성을 제거한 공통 Action 레이어
@@ -365,7 +402,7 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 ```
 
-### 4) `home-mcp-core` 설치
+### 4) Core 서버 설치 (`home-mcp-core`)
 
 IntentCP는 Monorepo 구조이지만,  
 **현재 Python 의존성은 `home-mcp-core/pyproject.toml`에서 단일 관리**됩니다.
@@ -391,7 +428,7 @@ homemcp init
   - `home-mcp-core/config/settings.toml`
   - `home-mcp-core/config/devices.toml`
 
-### 6) 서버 실행 (home-mcp-core)
+### 6) 서버 실행 (Core: home-mcp-core)
 
 ```bash
 uvicorn home_mcp_core.app:app --reload --host 0.0.0.0 --port 8000
@@ -423,7 +460,7 @@ curl -X GET "http://localhost:8000/tuya/living_light/status"
 curl -X GET "http://localhost:8000/tuya/sequence?actions=living_light:on,subdesk_light:off?delay=5"
 ```
 
-### 9) Siri Shortcuts 연결 (home-mcp-siri-shortcuts-signal)
+### 9) Siri Shortcuts 연결 (Signal: home-mcp-siri-shortcuts-signal)
 
 1) `home-mcp-siri-shortcuts-signal/install/setup-checklist.ko.md`를 따라 단축어를 설치
 2) 단축어 내부의 IntentCP 서버 주소를 내 서버 주소로 변경

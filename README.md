@@ -2,46 +2,45 @@
 
 # IntentCP
 
-> **A smart-home orchestrator powered by iOS Shortcuts — a zero‑infrastructure AI experience**
->
-> *“No local LLM, no GPU setup — start natural-language voice control with just an iPhone + Shortcuts.”*
+> **A lightweight Intent Control Plane for natural-language control via iOS Shortcuts**  
+> Without hosting a local LLM or GPU server, IntentCP turns the intent parsed on your phone into a  
+> **safe execution format (Control URL)** and connects it to real actions.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![iOS Shortcuts](https://img.shields.io/badge/iOS-Shortcuts-FF4A00.svg?logo=shortcuts&logoColor=white)](https://support.apple.com/guide/shortcuts/welcome/ios)
 
-IntentCP is a **voice-first smart home orchestration system** integrated with **iOS Shortcuts**.
-You don’t need to host your own AI (local LLM / paid model server). Instead, IntentCP leverages **Apple Intelligence features available inside Shortcuts (private cloud)** and **ChatGPT (optional, if you have an account)** to:
+> **Note (naming / MCP confusion)**
+>
+> IntentCP is **not** an implementation of Anthropic’s **Model Context Protocol (MCP)**.
+> In this project, “Control Plane” refers to an architecture that connects **natural-language intent → execution request (Control URL) → local execution**.
 
-- turn natural language into a **safe, executable control request** (LLM #1)
-- return a **short, friendly one-line voice feedback** from the actual device result (LLM #2)
+IntentCP does **not** execute natural-language commands directly.
+Instead, it translates them into a **standardized execution request (Control URL)**,
+and the server executes it **only within a defined spec and constraints**.
 
-It also standardizes execution using a **Control URL spec** (`/tuya/{device}/{action}`), so the same actions can be triggered from voice, scripts, automation, or dashboards.
+Today, IntentCP takes a **Shortcuts-first** approach:
+- Siri + mobile AI (Apple Intelligence / optional ChatGPT) are used as the *intent parsing layer*
+- the execution layer is designed to be extensible beyond smart-home IoT, including **local system control via a Windows Agent**
 
 **TL;DR**
-- 📱 **Shortcuts-first UX**: start with “Hey Siri” + a Shortcut — no extra app required
-- 🤖 **No AI hosting required**: use Shortcuts’ Apple Intelligence (private cloud) / ChatGPT (optional)
-- 🎙️ Speak → **LLM #1** generates a Control URL → IntentCP executes on real devices
-- 🔁 Result JSON → **LLM #2** produces a one-line response → Siri reads it via TTS
-- 🧩 Tuya-first, designed to extend to external controllers (e.g., Windows Agent)
+- 📱 **Shortcuts-first UX**: trigger with “Hey Siri” + a Shortcut
+- 🤖 **No local AI hosting**: no GPU / no always-on local LLM server at home
+- 🔗 **URL-based execution model**: natural language → Control URL → server execution
+- 🧩 **Multi-target control**: Tuya + Windows Agent (and more planned)
 
 ## ✨ Why IntentCP?
 
-- **🚫 Zero AI ops**: no GPU, no local LLM hosting — reuse the AI already available in Shortcuts (and ChatGPT optionally).
-- **🧠 Runs on ultra-low-spec hardware**: IntentCP Core does not assume a powerful machine.
-  - no dedicated LLM server, no GPU, no high-memory environment required
-  - proven to run in real-world daily use on a **Raspberry Pi Zero 2W**
-- **🗣️ Real intent-based control**: not just fixed commands like “turn on the light,” but “set things up for movie night.”
-- **🔗 URL-First**: one standardized URL format for voice, scripts, automation, and dashboards.
-- **🛠️ Built to extend**: start with Tuya, grow toward Windows Agent, Matter, Zigbee, and more.
+- **Predictable execution**: natural language is normalized into a **Control URL**, and the server executes only within the defined spec.
+- **No local AI hosting**: reuse mobile AI (on-device / private cloud / optional cloud) instead of running AI infra at home.
+- **Control URL (standard execution surface)**: one URL spec shared across voice, scripts, automation, and dashboards.
+- **Designed to extend**: Tuya-first today, but structured to grow toward Windows Agent, Matter/Zigbee, and more.
 
-## 🚀 The Vision: Home Master Control Plane
+## 🚀 The Vision: Intent Control Plane
 
-IntentCP is not just a bridge. It aims to become a **central Control Plane** that unifies home devices/states/scenes into
-**LLM-readable context**, and evolves into a **Home-to-LLM Protocol**.
-
-Today, IntentCP delivers a lightweight, practical “MCP” via iOS Shortcuts.
-Long-term, it plans to offer an (optional) **standard MCP (Model Context Protocol) interface** for integration with external Tool Hosts/clients.
+IntentCP is not a “just demo it with a chatbot” project.
+It aims to separate and compose:
+**intent parsing (LLM) ↔ execution (Control Plane) ↔ feedback (LLM/TTS)**.
 
 ---
 
@@ -95,7 +94,7 @@ Verify the core loop in three steps:
 - 📱 **iOS Shortcuts-first UX**: Shortcuts are the distribution + usage unit (not an extra app/dashboard)
 - 🤖 **No AI Hosting Required**
   - no local LLM, no dedicated model server, no GPU/VRAM
-  - supports **Apple Intelligence inside Shortcuts (private cloud)** + **ChatGPT (optional)**
+  - works with **Apple Intelligence features available in Shortcuts** and **ChatGPT (optional)**
 - 🧠 **Lightweight Core Server**
   - IntentCP Core focuses on orchestration (HTTP control + device gateway)
   - designed to run 24/7 on low-power home servers (e.g., Raspberry Pi / mini PC)
@@ -127,7 +126,7 @@ IntentCP/
   README.md                         # Project overview (EN)
   README.ko.md                      # Project overview (KO)
 
-  home-mcp-core/                    # Central MCP server (FastAPI)
+  home-mcp-core/                    # Core server (FastAPI)
     src/                            # Server implementation
     cli/                            # CLI for setup / operations
     pyproject.toml
@@ -205,6 +204,35 @@ sequenceDiagram
     LLM2-->>Shortcuts: One-sentence response
     Shortcuts->>Siri: Speak via TTS
     Siri-->>User: Voice feedback
+```
+
+---
+
+### (Roadmap) Dynamic context injection via `/context`
+
+This is **not implemented yet**. The planned flow is:
+- Shortcuts fetches the latest device specs/states from the local server (`/context`)
+- that context is injected into the prompt before calling the LLM
+
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant Siri as Siri
+    participant Shortcuts as iOS Shortcut (Signal)
+    participant IntentCP as IntentCP Server
+    participant LLM1 as LLM #1 (URL Generator)
+
+    User->>Siri: Trigger the shortcut
+    Siri->>Shortcuts: Run Shortcut
+
+    Shortcuts->>IntentCP: HTTP GET /context
+    IntentCP-->>Shortcuts: Device specs + states (JSON)
+    Note over Shortcuts: Inject context into the prompt
+
+    Shortcuts->>LLM1: Natural language + context
+    LLM1-->>Shortcuts: Control URL
+
+    Shortcuts->>IntentCP: HTTP GET/POST (Control URL)
 ```
 
 ---
@@ -304,6 +332,7 @@ This URL scheme is a core design of IntentCP to standardize execution across voi
 ## Planned Extensions
 
 - Schedule / weather / location / sensor-driven automation
+- **(Roadmap) Dynamic context injection (`/context`)**: Shortcuts fetches device specs/states at runtime to stabilize Control URL generation.
 - A home-server operation guide for low-power always-on setups (Raspberry Pi, mini PC, etc.)
 - **Multi IoT platform support**
   - Integrate other IoT platforms that provide Cloud APIs (beyond Tuya)
